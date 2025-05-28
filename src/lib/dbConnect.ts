@@ -6,6 +6,7 @@ type connectionObject = {
 
 const connection : connectionObject = {}
 
+
 async function dbConnect():Promise<void> {
     if (connection.isConnected) {
         console.log("Already connected to the DB");
@@ -17,10 +18,10 @@ async function dbConnect():Promise<void> {
       
       connection.isConnected = db.connections[0].readyState
 
-      console.log(db);
+    //   console.log(db);
       
-      console.log(db.connections[0]);
-      console.log(db.connection);
+    //   console.log(db.connections[0]);
+    //   console.log(db.connection);
       
       console.log("Db connected succefully");
       
