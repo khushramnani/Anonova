@@ -1,7 +1,7 @@
 import UserModal from "@/models/User";
 import dbConnect from "@/lib/dbConnect"
 import bcrypt from "bcrypt";
-import { success } from "zod/v4";
+
 import { sendVerificationEmail } from "@/helpers/sendEmail";
 
 export async function POST(request:Request) {
