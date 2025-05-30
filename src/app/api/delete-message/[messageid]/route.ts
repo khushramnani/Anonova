@@ -3,20 +3,33 @@ import dbConnect from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import mongoose from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
+import { ApiResponse } from "@/types/ApiResponse";
 
-export async function DELETE(req: Request, { params }: { params: { messageid: string } }) {
+
+type Params = {
+  params: {
+    messageid: string;
+  };
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: Params
+): Promise<NextResponse<ApiResponse>> {
+
   await dbConnect();
 
   const session = await getServerSession(authOptions);
   if (!session?.user) {
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: "User not authenticated, please login." },
       { status: 401 }
     );
   }
 
   try {
-    const userId = session.user._id;  // Or session.user.id depending on what you store
+    const userId = session.user._id || session.user._id;
     const messageObjectId = new mongoose.Types.ObjectId(params.messageid);
 
     const result = await UserModal.updateOne(
@@ -25,20 +38,19 @@ export async function DELETE(req: Request, { params }: { params: { messageid: st
     );
 
     if (result.modifiedCount === 0) {
-      return Response.json(
+      return NextResponse.json(
         { success: false, message: "Message not found or already deleted." },
         { status: 404 }
       );
     }
 
-    return Response.json(
+    return NextResponse.json(
       { success: true, message: "Message Deleted" },
       { status: 200 }
     );
-
   } catch (error) {
     console.error("Error deleting message:", error);
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: "Error deleting message." },
       { status: 500 }
     );

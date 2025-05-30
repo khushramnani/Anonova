@@ -4,17 +4,15 @@ import debounce from 'debounce';
 import Link from 'next/link';
 import * as z from 'zod';
 
-import { Form, FormProvider, useForm } from 'react-hook-form';
+import {  useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState, useEffect } from 'react';
 import { ApiResponse } from '@/types/ApiResponse';
 import axios from "axios"
 import { AxiosError } from 'axios';
 import { signUpSchema } from '@/schemas/signUpSchema';
-
-import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
 import { LoaderCircle , Loader } from 'lucide-react';
@@ -119,7 +117,7 @@ const SignUpForm = () => {
                         </h1>
                         <p className="mb-4">Sign up to start your anonymous adventure</p>
                     </div>
-                    <FormProvider {...form}>
+                    <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
                     <FormField
                         name="username"
@@ -203,7 +201,7 @@ const SignUpForm = () => {
          
 
                     </form>
-                    </FormProvider>
+                    </Form>
                     <div className="text-center mt-4">
           <p>
             Already a member?{' '}

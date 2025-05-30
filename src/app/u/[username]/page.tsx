@@ -3,13 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Message } from "@/models/User";
+
 import { messageSchema } from "@/schemas/messageSchema";
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -24,7 +24,7 @@ const parseStringMessage = (messageString:string):string[] => {
 const initialMessageString =
   "What's your favorite movie?||Do you have any pets?||What's your dream job?";
 
-const page = () => {
+const Page = () => {
 const params = useParams<{username:string}>()
 const username = params.username
 
@@ -102,4 +102,4 @@ form.reset({ ...form.getValues(), content: '' });
   )
 }
 
-export default page
+export default Page
