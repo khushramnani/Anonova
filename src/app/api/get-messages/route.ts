@@ -49,6 +49,13 @@ export async function GET(req: Request) {
     }
     ]).exec()
 
+    if (!user || user.length === 0) {
+  return Response.json({
+    success: true,
+    messages: []
+  }, { status: 200 });
+}
+
     return Response.json({
         success:true,
         messages: user[0].messages

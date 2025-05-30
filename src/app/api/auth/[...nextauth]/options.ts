@@ -60,13 +60,15 @@ export const authOptions: NextAuthOptions = {
         })
     ],
     callbacks:{
-        async jwt({ token , user }) {
-            if (user) {
-                token._id = user._id?.toString();
-                token.isVerified = user.isVerified;
-            }
-            return token;
-        },
+async jwt({ token , user }) {
+    if (user) {
+        token._id = user._id?.toString();
+        token.isVerified = user.isVerified;
+        token.username = user.username; // ✅ Add this line
+        token.isAcceptingMessages = user.isAcceptingMessages; // ✅ Also add this if needed
+    }
+    return token;
+},
 
         async session({ session, token,  }) {
             if (token) {

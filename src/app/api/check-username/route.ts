@@ -1,5 +1,5 @@
 import UserModal from "@/models/User";
-import { z } from "zod/v4";
+import { z } from "zod";
 import dbConnect from "@/lib/dbConnect";
 import { usernameValidation } from "@/schemas/signUpSchema";
 import { success } from "zod/v4";
@@ -12,7 +12,7 @@ const usernameQuerySchema = z.object({
 export async function GET(req:Request) {
     
     await dbConnect()
-
+console.log("usernameValidation is", typeof usernameValidation);
     try {
         const {searchParams} = new URL(req.url)
         const queryParams = {

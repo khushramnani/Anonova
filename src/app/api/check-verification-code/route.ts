@@ -1,13 +1,13 @@
 import UserModal from "@/models/User";
 import dbConnect from "@/lib/dbConnect";
-import {success, z} from "zod/v4";
+import { z} from "zod";
 import { verifySchema } from "@/schemas/verifySchema";
 
 
 
-const verifyCodeQuerySchema = z.object({
-    verifyCode : verifySchema
-})
+// const verifyCodeQuerySchema = z.object({
+//     verifyCode : verifySchema
+// })
 
 export async function POST(req:Request) {
     await dbConnect()
@@ -30,12 +30,12 @@ export async function POST(req:Request) {
             })
         }
     
-        const codeValidation = verifyCodeQuerySchema.safeParse({ verifyCode: code })
+        const codeValidation =  verifySchema.safeParse({ code })
     
         if (!codeValidation.success) {
             return Response.json({
                success: false,
-               message: codeValidation.error?.format().verifyCode?._errors || "Invalid OTP"
+               message: codeValidation.error?.format().code?._errors || "Invalid OTP"
             },{status:401})
         }
     

@@ -1,12 +1,12 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModal, { Message } from "@/models/User";
 import { messageSchema } from "@/schemas/messageSchema";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 
-const validateMessageQuerySchema = z.object({
-    validateMessage: messageSchema
-})
+// const validateMessageQuerySchema = z.object({
+//     validateMessage: messageSchema
+// })
 
 
 export async function POST(req:Request) {
@@ -14,13 +14,13 @@ export async function POST(req:Request) {
 
     const { username , content } = await req.json()
 
-        const checkMessageValidation = validateMessageQuerySchema.safeParse({validateMessage: content})
+        const checkMessageValidation = messageSchema.safeParse({content})
 
     if (!checkMessageValidation.success) {
          return Response.json({
                success: false,
-               message: checkMessageValidation.error?.format().validateMessage?._errors || "Invalid OTP"
-            },{status:401})
+               message: checkMessageValidation.error?.format().content?._errors || "Invalid OTP"
+            },{status:400})
     }
 
     const user = await UserModal.findOne({
@@ -38,11 +38,12 @@ export async function POST(req:Request) {
         return Response.json({
                success: false,
                message: "User Is Not Accepting Message Right Now"
-            },{status:401})
+            },{status:403})
     }
 
+    const validatedMessage = checkMessageValidation.data as z.infer<typeof messageSchema>;
     const newMessage: Message = {
-        content: checkMessageValidation.data.validateMessage.content,
+        content: validatedMessage.content,
         createdAt: new Date(),
        
     } as Message;

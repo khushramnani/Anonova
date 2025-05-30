@@ -4,25 +4,23 @@ import { getServerSession } from "next-auth";
 import { User } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import { acceptMessageSchema } from "@/schemas/acceptMessageSchema";
-import {z} from "zod/v4";
+import { z } from "zod";
 
-
-  const acceptQuerymessageSchema = z.object({
-    acceptMessage: acceptMessageSchema
-  })
+const acceptQuerymessageSchema = z.object({
+  acceptMessages: z.boolean(),
+});
 
 export async function POST(req: Request) {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
-
   const user: User = session?.user as User;
 
   if (!session || !session.user) {
     return Response.json(
       {
         success: false,
-        message: "User not authenticated plz login",
+        message: "User not authenticated, please login",
       },
       { status: 401 }
     );
@@ -31,10 +29,10 @@ export async function POST(req: Request) {
   const userId = user._id;
   const body = await req.json();
 
-
   const validation = acceptQuerymessageSchema.safeParse(body);
 
   if (!validation.success) {
+    console.error("Validation errors:", validation.error.format());
     return Response.json(
       {
         success: false,
@@ -45,13 +43,12 @@ export async function POST(req: Request) {
     );
   }
 
-  const { acceptMessage } = validation.data;
-
+  const { acceptMessages } = validation.data;
 
   try {
     const updateUser = await UserModal.findByIdAndUpdate(
       userId,
-      { isAcceptMessaging: acceptMessage },
+      { isAcceptMessaging: acceptMessages },
       { new: true }
     );
 
@@ -59,27 +56,25 @@ export async function POST(req: Request) {
       return Response.json(
         {
           success: false,
-          message: "Unable to find user to updadte accept message status",
+          message: "Unable to find user to update accept message status",
         },
         { status: 404 }
       );
     }
 
     return Response.json(
-        {
-          success: true,
-          message: "Message status updadte succesfully",
-        },
-        { status: 200 }
-      );
-
-
+      {
+        success: true,
+        message: "Message status updated successfully",
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.log(error);
+    console.error("Error updating accept message status:", error);
     return Response.json(
       {
         success: false,
-        message: "Something went wrong on accepting message",
+        message: "Something went wrong while updating message status",
       },
       { status: 500 }
     );
