@@ -31,6 +31,7 @@ export interface User extends Document{
     verifyCodeExpiry: Date,
     isVerified: boolean,
     isAcceptMessaging: boolean
+    githubId?: string, 
     messages: Message[]
 }
 
@@ -50,15 +51,15 @@ const userSchema: Schema<User> = new Schema({
     },
     password:{
         type: String,
-        required: [true , "Password is required"],
+        required: false,
     },
     verifyCode:{
         type: String,
-        required: [true , "VerifyCode is required"]
+        required: false
     },
     verifyCodeExpiry:{
         type: Date,
-        required: [true , "verifyCodeExpiry is required"]
+        required: false
     },
     isVerified:{
         type: Boolean,
@@ -68,6 +69,11 @@ const userSchema: Schema<User> = new Schema({
         type: Boolean,
         default: true,
     },
+    githubId: {
+    type: String,
+    unique: true,
+    sparse: true, // Allows null values for non-GitHub users
+  },
 
     messages: [messageSchema]
 

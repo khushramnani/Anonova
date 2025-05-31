@@ -1,28 +1,28 @@
-'use client';
+'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { signIn } from 'next-auth/react';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { signIn } from 'next-auth/react'
 import {
   Form,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { signInSchema } from '@/schemas/signInSchema';
-import { Loader , X } from 'lucide-react';
-import { useState } from 'react';
+} from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+import { signInSchema } from '@/schemas/signInSchema'
+import { Loader2, ArrowLeft } from 'lucide-react'
+import { useState } from 'react'
 
 export default function SignInForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -30,72 +30,76 @@ export default function SignInForm() {
       identifier: '',
       password: '',
     },
-  });
+  })
 
-  
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    setIsSubmitting(true)
     const result = await signIn('credentials', {
       redirect: false,
       identifier: data.identifier,
       password: data.password,
-    });
+    })
 
     if (result?.error) {
       if (result.error === 'CredentialsSignin') {
-        // toast({
-        //   title: 'Login Failed',
-        //   description: 'Incorrect username or password',
-        //   variant: 'destructive',
-        // });
-
         toast.error('Login Failed: Incorrect username or password', {
           duration: 5000,
           position: 'top-right',
           style: {
-            backgroundColor: '#f87171', // red-500
+            backgroundColor: '#F87171', // red-500
             color: '#fff',
           },
-        });
+        })
       } else {
-        toast.error("Error",{
-          description: result.error,
+        toast.error(result.error, {
           duration: 5000,
           position: 'top-right',
           style: {
-            backgroundColor: '#f87171', // red-500
+            backgroundColor: '#F87171', // red-500
             color: '#fff',
-          }
-        });
+          },
+        })
       }
     }
 
     if (result?.url) {
       toast.success('Login Successful', {
-        duration: 3000, 
+        duration: 3000,
         position: 'top-right',
         style: {
-          backgroundColor: '#34d399', // green-500
+          backgroundColor: '#34D399', // green-500
           color: '#fff',
         },
-      });
-      router.replace('/dashboard');
+      })
+      router.replace('/dashboard')
     }
-  };
+    setIsSubmitting(false)
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className='flex justify-end mb-4'>
-          <Link href="/" className="text-black hover:text-gray-400">
-            <X className="h-6 w-6" />
-          </Link>
-        </div>
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Welcome Back to Anonova✨
+    <div className="min-h-screen bg-gradient-to-br from-white via-indigo-100 to-indigo-200 flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-md bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-8 space-y-8 transition-all duration-300 hover:shadow-xl relative">
+        {/* Back Button */}
+        <Link href="/" className="absolute top-4 left-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-gray-600 hover:text-indigo-600 hover:bg-gray-100 transition-colors duration-200"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            
+          </Button>
+        </Link>
+
+        <div className="text-center mt-2">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-indigo-600 mb-3">
+            Rejoin Your Feedback Adventure
           </h1>
-          <p className="mb-4">Sign in to continue your secret conversations 🤫</p>
+          <p className="text-gray-600 text-base sm:text-lg font-medium">
+            Sign in to dive back into anonymous, heartfelt connections
+          </p>
         </div>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -103,46 +107,64 @@ export default function SignInForm() {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username or Email </FormLabel>
-                  <Input {...field} />
-                  <FormMessage />
+                  <FormLabel className="text-gray-800 font-semibold">Username or Email</FormLabel>
+                  <Input
+                    placeholder="Enter your username or email"
+                    {...field}
+                    className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg py-2.5 transition-all duration-200 bg-gray-50/50"
+                  />
+                  <FormMessage className="text-red-500 text-sm mt-1" />
                 </FormItem>
               )}
             />
+
             <FormField
               name="password"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <Input type="password" {...field} />
-                  <FormMessage />
+                  <FormLabel className="text-gray-800 font-semibold">Password</FormLabel>
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    {...field}
+                    className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg py-2.5 transition-all duration-200 bg-gray-50/50"
+                  />
+                  <FormMessage className="text-red-500 text-sm mt-1" />
                 </FormItem>
               )}
             />
-            <Button className='w-full' type="submit">
+
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-indigo-600 hover:to-cyan-600 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-105"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
-                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   Signing In...
                 </>
               ) : (
-                'Sign In'
+                'Dive In'
               )}
-
-
             </Button>
           </form>
         </Form>
-        <div className="text-center mt-4">
-          <p>
-            Not a member yet?{' '}
-            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
-              Sign up
+
+        <div className="text-center text-sm">
+          <p className="text-gray-600 font-medium">
+            New to the journey?{' '}
+            <Link
+              href="/sign-up"
+              className="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-200"
+            >
+              Sign Up
             </Link>
           </p>
         </div>
       </div>
     </div>
-  );
+  )
 }
+
