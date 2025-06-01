@@ -7,6 +7,8 @@ import { motion } from 'framer-motion'
 import { LogIn ,  Share2, Sparkles, Users } from 'lucide-react'
 import { Card, CardDescription } from '@/components/ui/card'
 import Marquee from "react-fast-marquee";
+import { Analytics } from "@vercel/analytics/next"
+
 export default function Home() {
   const [previewLink, setPreviewLink] = useState('')
   const [showPreviewLink, setShowPreviewLink] = useState(false)
