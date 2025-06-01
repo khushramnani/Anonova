@@ -60,7 +60,7 @@ export default function Home() {
           animate="visible"
           variants={fadeIn}
         >
-          <h1 className="text-5xl sm:text-6xl lg:text-8xl title-regular font-bold text-gray-900 mb-4 tracking-tight">
+          <h1 className="text-4xl sm:text-6xl lg:text-8xl title-regular font-bold text-gray-900 mb-4 tracking-tight">
             Discover <span className="text-indigo-500 font-light italic">Anonova</span>
           </h1>
           <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 lg:my-16 px-4 sm:px-6 lg:px-8 bg-white/50">
+      <section className="py-16 lg:py-16 px-4 sm:px-6 lg:px-8 bg-white/50">
         <motion.div 
           className="max-w-6xl mx-auto"
           initial="hidden"
