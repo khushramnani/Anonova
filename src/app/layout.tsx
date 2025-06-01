@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AuthProvider from "@/context/authProvider";
 import { Toaster } from "@/components/ui/sonner"
-
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   title: "Anonova – Anonymous Feedback & Confessions App",
@@ -22,6 +22,7 @@ export default function RootLayout({
       >
         <AuthProvider>
         {children}
+        <Analytics/>
         <Toaster/>
         </AuthProvider>
       </body>
