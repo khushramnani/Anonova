@@ -23,6 +23,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Link from "next/link"
 
 const Dashboard = () => {
   const [getMessages, setGetMessages] = useState<Message[]>([])
@@ -139,9 +140,9 @@ const Dashboard = () => {
       <nav className="bg-gradient-to-r from-white via-indigo-50 to-indigo-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="flex justify-between h-16 items-center">
-            <div className="flex-shrink-0">
+            <Link href="/" className="flex-shrink-0">
               <h1 className="text-2xl  text-indigo-500 logo-italic">Anonova</h1>
-            </div>
+            </Link>
             <div className="flex items-center">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

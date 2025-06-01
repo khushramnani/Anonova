@@ -114,7 +114,7 @@ const Page = () => {
                     <FormControl>
                       <Textarea
                         placeholder="Write your anonymous message here..."
-                        className="resize-none lg:text-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg py-2.5 transition-all duration-200 bg-gray-50/50 min-h-[120px]"
+                        className="resize-none text-base lg:text-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg py-2.5 transition-all duration-200 bg-gray-50/50 min-h-[120px]"
                         {...field}
                       />
                     </FormControl>
