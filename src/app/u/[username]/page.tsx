@@ -65,7 +65,8 @@ const Page = () => {
     try {
       const response = await axios.post<ApiResponse>('/api/generate-messages')
       if (response.data.success && response.data.text) {
-        const questions = response.data.text.split('||').map((q: string) => q.trim())
+        const cleanText = response.data.text.replace(/^"(.*)"$/, '$1');
+        const questions = cleanText.split('||').map((q: string) => q.trim())
         setSuggestedQuestions(questions)
         toast.success("Suggested questions loaded!", { style: { background: '#34D399', color: '#fff' } })
       } else {
@@ -168,7 +169,7 @@ const Page = () => {
                     onClick={() => handleQuestionClick(question)}
                   >
                     <CardTitle className="text-sm font-medium text-gray-800">
-                      {question}
+                      {question.replace(/[.?!]$/, "")}
                     </CardTitle>
                   </Card>
                 ))}
